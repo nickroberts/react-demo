@@ -1,5 +1,26 @@
 /** @jsx React.DOM */
 
+function pad(n, width, z) {
+  z = z || '0';
+  n = n + '';
+  return n.length >= width ? n : new Array(width - n.length + 1).join(z) + n;
+}
+
+function formatDateTime (d) {
+  var hours = d.getHours();
+  var ampm = hours >= 12 ? 'PM' : 'AM';
+  hours = hours % 12;
+  hours = hours ? hours : 12;
+  var minutes = pad(d.getMinutes(), 2);
+  var seconds = pad(d.getSeconds(), 2);
+  var milliseconds = pad(d.getMilliseconds(), 3);
+  return hours + ':' +
+    minutes + ':' +
+    seconds + '.' +
+    milliseconds + ' ' +
+    ampm;
+}
+
 var Time = React.createClass({
   getInitialState: function () {
     return {
@@ -14,7 +35,7 @@ var Time = React.createClass({
   },
   render: function() {
     return (
-      <time dateTime={this.state.date.toString()}>{this.state.date.toLocaleTimeString()}</time>
+      <time dateTime={this.state.date.toString()}>{formatDateTime(this.state.date)}</time>
     );
   }
 });
